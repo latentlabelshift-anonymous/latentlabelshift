@@ -39,8 +39,6 @@ class ClusterModelSklearnNMF(ClusterModel):
 
         x_matrix = x_matrix / np.sum(x_matrix, axis=0, keepdims=True)
 
-
-        from sklearn.decomposition import NMF
         self.model = NMF(n_components=n_latents, init='random')
         
         W_new = self.model.fit_transform(x_matrix.T).T

@@ -1,9 +1,15 @@
-import enum
 from sklearn.utils import shuffle
 import torch
 import numpy as np
 import torchvision
-from torchvision import transforms
+from torchvision import transforms, datasets
+from torch.utils import data
+
+from torchvision import transforms as tf
+from glob import glob
+import os
+from PIL import Image
+
 
 from experiment_utils import * #coarse labels also gets imported from here
 
@@ -91,11 +97,6 @@ class Dataset:
         # self.valid_data_concatenate = valid_data_concatenate
         self.valid_histogram = valid_histogram
         self.min_valid_num = min_valid_num
-
-from torchvision import transforms as tf
-from glob import glob
-import os
-from PIL import Image
 
 """
 Author: Wouter Van Gansbeke, Simon Vandenhende
@@ -517,33 +518,33 @@ class FieldGuide28(Dataset):
 
         n_classes = 28
 
-        fieldguide2_directory = '~/fieldguide28/'
-        fg2_mean = [0.4923402, 0.49349242, 0.35889822]
-        fg2_std  = [0.25436208, 0.24372408, 0.25995356]
-        train_data = torchvision.datasets.ImageFolder(fieldguide2_directory + 'train',
+        fieldguide28_directory = '~/fieldguide28/'
+        fg28_mean = [0.4923402, 0.49349242, 0.35889822]
+        fg28_std  = [0.25436208, 0.24372408, 0.25995356]
+        train_data = torchvision.datasets.ImageFolder(fieldguide28_directory + 'train',
                 transform=transforms.Compose([
                                         transforms.Resize(256),
                                         transforms.RandomCrop(224),
                                         transforms.RandomHorizontalFlip(),
                                         transforms.ToTensor(),
-                                        transforms.Normalize(fg2_mean, fg2_std),
+                                        transforms.Normalize(fg28_mean, fg28_std),
                                     ]))
 
-        valid_data = torchvision.datasets.ImageFolder(fieldguide2_directory + 'valid',
+        valid_data = torchvision.datasets.ImageFolder(fieldguide28_directory + 'valid',
                 transform=transforms.Compose([
                     transforms.Resize(256),
                     transforms.CenterCrop(224),
                     transforms.ToTensor(),
-                    transforms.Normalize(mean=fg2_mean,std=fg2_std)
+                    transforms.Normalize(mean=fg28_mean,std=fg28_std)
                 ]))
 
 
-        test_data = torchvision.datasets.ImageFolder(fieldguide2_directory + 'test',
+        test_data = torchvision.datasets.ImageFolder(fieldguide28_directory + 'test',
                 transform=transforms.Compose([
                     transforms.Resize(256),
                     transforms.CenterCrop(224),
                     transforms.ToTensor(),
-                    transforms.Normalize(mean=fg2_mean,std=fg2_std)
+                    transforms.Normalize(mean=fg28_mean,std=fg28_std)
                 ]))
 
         train_data = torch.utils.data.Subset(train_data, torch.randperm(len(train_data)).tolist())

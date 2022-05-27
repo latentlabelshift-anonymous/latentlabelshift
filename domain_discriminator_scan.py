@@ -4,8 +4,6 @@ import torch
 from torch import dropout, nn
 import torch.nn.functional as F
 
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
 import wandb
 from models.resnet import  *

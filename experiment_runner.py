@@ -1,22 +1,22 @@
 import os
-
+# import ssl
+# ssl._create_default_https_context = ssl._create_unverified_context
 
 import argparse
 parser = argparse.ArgumentParser(description='Choose dataset, seed wave')
 parser.add_argument('--dataset', default=None, type=str,
-                     help='choose dataset')
+                     help='choose dataset from [cifar10, cifar20, imagenet, fg2, fg28]')
 
 parser.add_argument('--random_seed_wave', type=int, default=1,
-                     help='random_seed_wave')
-parser.add_argument('--GPU', type=int, default=0)
-parser.add_argument('--start_alpha_index', type=int, default=0)
-parser.add_argument('--start_domain_index', type=int, default=0)
+                     help='choose set of random seeds from [1,2,3,4]')
+parser.add_argument('--GPU', type=int, default=0, help='choose GPU')
+parser.add_argument('--start_alpha_index', type=int, default=0, help='choose start index of alpha list from [0,1,2]')
+parser.add_argument('--start_domain_index', type=int, default=0, help='choose start index of domain list (options vary by dataset)')
 args = parser.parse_args()
 
 # IMPORTANT: DO THIS BEFORE ANY OTHER IMPORTS. Must be set before other imports loaded
 os.environ["CUDA_VISIBLE_DEVICES"]=str(args.GPU)
 import torch
-import scipy
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
 print(device)
@@ -34,8 +34,8 @@ random_seed_wave = args.random_seed_wave
 
 
 if random_seed_wave == 1:
-    class_prior_seeds = [4, 23, 623, 23423, 66]
-    dataseed_seeds = [7636,25,236,123,823]
+    class_prior_seeds   = [4, 23, 623, 23423, 66]
+    dataseed_seeds      = [7636,25,236,123,823]
 elif random_seed_wave == 2:
     class_prior_seeds   = [268773, 9947296, 76383, 2234, 12839]
     dataseed_seeds      = [938759, 2827476, 9283896, 776768, 2658462]
@@ -273,8 +273,8 @@ for alpha_index, alpha, max_cond_number in zip(range(len(alphas)), alphas, max_c
         }
 
         run = wandb.init(
-            entity="latent-label-shift-2022",
-            project="latent-label-shift-2022-final",
+            entity="entity",
+            project="project",
             reinit=True,
             config=config
         )

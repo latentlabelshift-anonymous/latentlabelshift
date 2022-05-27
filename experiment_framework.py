@@ -13,7 +13,6 @@ from experiment_utils import *
 from feature_extractor import *
 from domain_discriminator import *
 from permutation_solver import *
-from deep_clustering import *
 from domain_discriminator_scan import *
 
 class ExperimentSetup:
